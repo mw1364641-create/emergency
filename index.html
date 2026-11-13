@@ -1,939 +1,130 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlRoot">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الموسوعة الفرعونية الشاملة للطوارئ والإنقاذ - تطوير مينا وجدي يونان</title>
-<style>
-:root {
---gold: #d4af37;
---gold-light: #f3e5ab;
---lapis: #0d1b2a;
---lapis-mid: #1b263b;
---red: #b71c1c;
---fire: #d84315;
---police: #1565c0;
---card-bg: rgba(255, 253, 247, 0.98);
---text-main: #222;
-}
-html, body {
-min-height: 100%;
-overflow-x: hidden;
-overflow-y: auto;
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background: radial-gradient(circle at top, #1b263b 0%, #0d1b2a 60%, #050a12 100%);
-color: var(--text-main);
-margin: 0;
-padding: 0;
-}
-.pharaoh-bg {
-position: fixed;
-top: 0; left: 0;
-width: 100%; height: 100%;
-pointer-events: none;
-z-index: 0;
-opacity: 0.12;
-}
-header {
-position: relative;
-z-index: 10;
-background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
-color: #fff;
-text-align: center;
-padding: 16px 15px;
-box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-border-bottom: 3px solid var(--gold);
-display: flex;
-justify-content: space-between;
-align-items: center;
-flex-wrap: wrap;
-}
-.header-center {
-flex: 1;
-text-align: center;
-}
-header .ankh-top {
-font-size: 22px;
-color: var(--gold);
-margin-bottom: 2px;
-}
-header h1 {
-margin: 0;
-font-size: 20px;
-color: var(--gold-light);
-}
-header p {
-margin: 2px 0 0;
-font-size: 12px;
-color: #e0e0e0;
-}
-.lang-btn {
-background: var(--gold);
-color: var(--lapis);
-border: 2px solid var(--gold-light);
-padding: 8px 16px;
-border-radius: 20px;
-font-weight: bold;
-font-size: 14px;
-cursor: pointer;
-transition: 0.3s;
-box-shadow: 0 3px 8px rgba(0,0,0,0.4);
-}
-.lang-btn:hover {
-background: var(--gold-light);
-transform: scale(1.05);
-}
-.pharaoh-border {
-height: 6px;
-background: repeating-linear-gradient(90deg, var(--gold) 0px, var(--gold) 15px, #8b0000 15px, #8b0000 30px, #1565c0 30px, #1565c0 45px);
-position: relative;
-z-index: 10;
-}
-.container {
-position: relative;
-z-index: 10;
-max-width: 950px;
-height: auto;
-margin: 10px auto;
-padding: 0 15px 40px 15px;
-}
-.search-box {
-margin: 12px 0;
-text-align: center;
-}
-.search-box input {
-width: 100%;
-max-width: 500px;
-padding: 10px 18px;
-border-radius: 25px;
-border: 2px solid var(--gold);
-background: rgba(255,255,255,0.95);
-font-size: 14px;
-outline: none;
-box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-}
-.nums {
-display: flex;
-flex-wrap: wrap;
-gap: 8px;
-justify-content: center;
-background: rgba(27, 38, 59, 0.9);
-border: 1px solid var(--gold);
-padding: 10px;
-border-radius: 12px;
-margin-bottom: 18px;
-box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-.nums a {
-text-decoration: none;
-background: linear-gradient(135deg, #b71c1c, #d32f2f);
-color: #fff;
-padding: 7px 14px;
-border-radius: 20px;
-font-weight: bold;
-font-size: 13px;
-border: 1px solid var(--gold-light);
-}
-.cat-title {
-background: linear-gradient(90deg, rgba(13,27,42,0.95), rgba(27,38,59,0.85));
-color: var(--gold-light);
-padding: 10px 15px;
-border-radius: 8px;
-margin: 22px 0 10px;
-font-size: 17px;
-border-right: 5px solid var(--gold);
-box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-}
-.grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-gap: 12px;
-}
-.card {
-background: var(--card-bg);
-padding: 15px;
-border-radius: 10px;
-cursor: pointer;
-box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-border-right: 5px solid var(--red);
-border-top: 2px solid var(--gold);
-transition: all 0.2s ease;
-}
-.card.fire { border-right-color: var(--fire); }
-.card.police { border-right-color: var(--police); }
-.card.hazmat { border-right-color: #fbc02d; }
-.card.nature { border-right-color: #388e3c; }
-.card.utility { border-right-color: #607d8b; }
-.card:hover {
-transform: translateY(-3px);
-box-shadow: 0 8px 20px rgba(212,175,55,0.3);
-}
-.card h3 { margin: 0 0 6px; font-size: 16px; color: #111; }
-.card p { margin: 0; font-size: 13px; color: #444; line-height: 1.4; }
-.details {
-display: none;
-background: var(--card-bg);
-padding: 20px;
-border-radius: 14px;
-border: 2px solid var(--gold);
-box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-animation: fadeIn 0.3s ease;
-}
-.details.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.details h2 {
-margin-top: 0;
-color: #8b0000;
-border-bottom: 2px solid var(--gold);
-padding-bottom: 8px;
-font-size: 20px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-flex-wrap: wrap;
-gap: 10px;
-}
-.read-sec-btn {
-background: #1565c0;
-color: #fff;
-border: none;
-padding: 6px 14px;
-border-radius: 20px;
-font-size: 13px;
-cursor: pointer;
-font-weight: bold;
-}
-.read-sec-btn:hover { background: #0d47a1; }
-.step {
-display: flex;
-flex-wrap: wrap;
-background: #fff;
-border: 1px solid #d7ccc8;
-border-right: 4px solid var(--gold);
-border-radius: 10px;
-margin-bottom: 14px;
-overflow: hidden;
-}
-.pic {
-width: 100%;
-max-width: 150px;
-height: 120px;
-background: #fdfbf7;
-display: flex;
-align-items: center;
-justify-content: center;
-border-left: 1px solid #e0e0e0;
-margin: auto;
-padding: 5px;
-font-size: 35px;
-font-weight: bold;
-color: #b71c1c;
-}
-.txt {
-flex: 1;
-min-width: 220px;
-padding: 14px;
-}
-.txt h4 { margin: 0 0 6px; color: #b71c1c; font-size: 15px; }
-.txt p { margin: 0; font-size: 13.5px; line-height: 1.6; color: #222; }
-.warn-box {
-background: #fff3e0;
-border-right: 4px solid #e65100;
-padding: 10px 14px;
-border-radius: 6px;
-margin-bottom: 14px;
-font-size: 13.5px;
-color: #bf360c;
-font-weight: bold;
-line-height: 1.5;
-}
-.back {
-background: linear-gradient(135deg, #1b263b, #0d1b2a);
-color: var(--gold-light);
-border: 2px solid var(--gold);
-padding: 12px;
-width: 100%;
-border-radius: 8px;
-font-size: 15px;
-font-weight: bold;
-cursor: pointer;
-margin-top: 12px;
-}
-.back:hover { background: #000; color: #fff; }
-footer {
-text-align: center;
-margin-top: 35px;
-color: #f3e5ab;
-font-size: 13px;
-background: rgba(13, 27, 42, 0.95);
-padding: 15px;
-border-radius: 10px;
-border: 1px solid var(--gold);
-position: relative;
-z-index: 10;
-}
-footer span { color: #ffd54f; font-weight: bold; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محطة طوارئ نظام NAR</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: Tahoma, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #161b22;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        input, button {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #30363d;
+            background: #21262d;
+            color: #fff;
+            font-size: 16px;
+        }
+        button {
+            background: #238636;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #2ea043;
+        }
+        #networkFeed {
+            text-align: right;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            background: #0b0f19;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .msg-item {
+            background: #21262d;
+            margin: 8px 0;
+            padding: 10px;
+            border-right: 4px solid #58a6ff;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-<svg class="pharaoh-bg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-<defs>
-<pattern id="pharaoh-pattern" width="240" height="240" patternUnits="userSpaceOnUse">
-<polygon points="60,90 15,160 105,160" fill="none" stroke="#d4af37" stroke-width="2.5"/>
-<polygon points="115,105 80,160 150,160" fill="none" stroke="#d4af37" stroke-width="2"/>
-<ellipse cx="195" cy="45" rx="12" ry="16" fill="none" stroke="#d4af37" stroke-width="3"/>
-<line x1="195" y1="61" x2="195" y2="105" stroke="#d4af37" stroke-width="3"/>
-<line x1="175" y1="73" x2="215" y2="73" stroke="#d4af37" stroke-width="3"/>
-<path d="M25,45 Q55,25 85,45 Q55,65 25,45 Z" fill="none" stroke="#d4af37" stroke-width="2.5"/>
-<circle cx="55" cy="45" r="7" fill="#d4af37"/>
-</pattern>
-</defs>
-<rect width="100%" height="100%" fill="url(#pharaoh-pattern)"/>
-</svg>
 
-<header>
-<div class="header-center">
-<div class="ankh-top">☥ 𓂀 ☥</div>
-<h1 id="mainTitle">موسوعة الفراعنة للطوارئ والإنقاذ الشامل</h1>
-<p id="mainSubtitle">الدليل الشامل والمصور لجميع حالات الطوارئ والكوارث (يعمل بدون إنترنت)</p>
-</div>
-<button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">English / العربية</button>
-</header>
-<div class="pharaoh-border"></div>
-
-<div class="container">
-<div class="search-box">
-<input type="text" id="searchInput" onkeyup="filterCards()" placeholder="🔍 ابحث عن أي حالة طوارئ...">
-</div>
-
-<div class="nums">
-<a href="tel:123" id="numAmbulance">🚑 إسعاف: 123</a>
-<a href="tel:180" id="numFire">🚒 مطافئ: 180</a>
-<a href="tel:122" id="numPolice">🚓 نجدة: 122</a>
-<a href="tel:129" id="numGas">🔥 طوارئ الغاز: 129</a>
-<a href="tel:121" id="numElec">⚡ طوارئ الكهرباء: 121</a>
-</div>
-
-<!-- غرفة الأدوات الذكية المتقدمة -->
-<div id="advancedTools" style="margin: 15px 0 25px 0; background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%); padding: 15px; border-radius: 12px; border: 2px solid var(--gold); text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,0.4);">
-<h3 style="color: var(--gold-light); margin-top: 0; font-size: 16px; margin-bottom: 10px;">⚡ غرفة العمليات وأدوات الإنقاذ الذكية</h3>
-<div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
-<button onclick="speakInstructions()" style="background: var(--gold); color: var(--lapis); border: 2px solid var(--gold-light); padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 13px;">🔊 نطق التعليمات الحالية</button>
-<button onclick="openQuiz()" style="background: #2e7d32; color: #fff; border: 2px solid #81c784; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 13px;">🧠 تحدي المسعف (سؤال وجواب)</button>
-<button onclick="startCprMetronome()" style="background: #b71c1c; color: #fff; border: 2px solid #e57373; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 13px;">❤️ مؤقت نبضات الإنعاش (CPR)</button>
-</div>
-</div>
-
-<div id="menu">
-<div class="cat-title" id="cat1Title">1. الحالات الطبية والإسعافية (Medical Emergencies)</div>
-<div class="grid">
-<div class="card" onclick="openSec('cpr')"><h3 id="cprCardTitle">❤️ توقف القلب والتنفس (Cardiac Arrest)</h3><p id="cprCardDesc">التعامل الفوري مع توقف القلب وفقدان الوعي التام والتنفس الصناعي.</p></div>
-<div class="card" onclick="openSec('heart')"><h3 id="heartCardTitle">💔 أزمة قلبية / ألم حاد بالصدر (Heart Attack)</h3><p id="heartCardDesc">علامات الذبحة الصدرية وتأمين المصاب لحين وصول الإسعاف.</p></div>
-<div class="card" onclick="openSec('stroke')"><h3 id="strokeCardTitle">🧠 سكتة دماغية (Stroke / FAST)</h3><p id="strokeCardDesc">قاعدة FAST للتعرف المبكر على السكتة الدماغية وسرعة التصرف.</p></div>
-<div class="card" onclick="openSec('choke')"><h3 id="chokeCardTitle">🫁 صعوبة حادة بالتنفس / اختناق (Choking)</h3><p id="chokeCardDesc">مناورة هيمليخ للكبار وإنقاذ الرضيع من انسداد مجرى الهواء.</p></div>
-<div class="card" onclick="openSec('bleed')"><h3 id="bleedCardTitle">🩸 نزيف حاد / الرعاف (Severe Bleeding)</h3><p id="bleedCardDesc">الضغط المباشر والرباط الضاغط والتعامل مع نزيف الأنف.</p></div>
-<div class="card" onclick="openSec('faint')"><h3 id="faintCardTitle">😵 فقدان الوعي / إغماء (Fainting)</h3><p id="faintCardDesc">إرجاع تدفق الدم للمخ ورفع الساقين للأعلى.</p></div>
-<div class="card" onclick="openSec('seizure')"><h3 id="seizureCardTitle">⚡ تشنجات عصبية / نوبة صرع (Seizures)</h3><p id="seizureCardDesc">حماية المصاب أثناء التشنج والوضع الجانبي للإفاقة بعدها.</p></div>
-<div class="card" onclick="openSec('poison')"><h3 id="poisonCardTitle">🧪 تسمم / جرعة زائدة (Poisoning)</h3><p id="poisonCardDesc">قاعدة عدم التقيؤ للمواد الكاوية والتوجه الفوري للطوارئ.</p></div>
-<div class="card" onclick="openSec('anap')"><h3 id="anapCardTitle">🐝 حساسية مفرطة / صدمة تأقية (Anaphylaxis)</h3><p id="anapCardTitleDesc">التعامل مع تورم الحلق وصدمة الحساسية الحادة.</p></div>
-<div class="card" onclick="openSec('burns')"><h3 id="burnsCardTitle">🔥 حروق شديدة / ضربة شمس (Burns)</h3><p id="burnsCardDesc">التبريد بماء فاتر والتعامل مع الإجهاد الحراري.</p></div>
-<div class="card" onclick="openSec('fracture')"><h3 id="fractureCardTitle">🦴 كسور مضاعفة أو عمود فقري (Fractures)</h3><p id="fractureCardDesc">تثبيت الكسور بالجبيرة وعدم تحريك مصاب العمود الفقري.</p></div>
-<div class="card" onclick="openSec('drown')"><h3 id="drownCardTitle">🌊 غرق أو شبه غرق (Drowning)</h3><p id="drownCardDesc">سحب الغريق بأمان والبدء الفوري بالإنعاش الرئوي.</p></div>
-<div class="card" onclick="openSec('electrocute')"><h3 id="electrocuteCardTitle">⚡ صعق كهربائي (Electrocution)</h3><p id="electrocuteCardDesc">فصل التيار وعزل المصاب بعصا خشبية جافة.</p></div>
-<div class="card" onclick="openSec('hypo')"><h3 id="hypoCardTitle">❄️ غيبوبة سكر / انخفاض حرارة (Diabetic / Hypothermia)</h3><p id="hypoCardDesc">التعامل مع هبوط السكر والدفء التدريجي للجسم.</p></div>
-<div class="card" onclick="openSec('bites')"><h3 id="bitesCardTitle">🦂 لدغات سامة (Venomous Bites)</h3><p id="bitesCardDesc">تثبيت العضو وتجنب جرح المكان أو مص السم.</p></div>
-</div>
-
-<div class="cat-title" id="cat2Title">2. حوادث الطرق والنقل (Traffic & Transport Accidents)</div>
-<div class="grid">
-<div class="card police" onclick="openSec('caraccident')"><h3 id="carAccTitle">🚗 تصادم مركبات / دهس / انقلاب (Collisions)</h3><p id="carAccDesc">تأمين موقع الحادث، مثلث التحذير، وكسر الزجاج للخروج من السيارات المحتجزة.</p></div>
-<div class="card police" onclick="openSec('trainmarine')"><h3 id="trainMarTitle">🚆 حادث قطار أو بحري / غرق مركب (Marine / Train)</h3><p id="trainMarDesc">إخلاء الركاب بسرعة، الالتزام بسترات النجاة، والابتعاد عن خطوط السكة الحديدية.</p></div>
-</div>
-
-<div class="cat-title" id="cat3Title">3. الحرائق والإنقاذ - الدفاع المدني (Fire & Rescue)</div>
-<div class="grid">
-<div class="card fire" onclick="openSec('firepass')"><h3 id="firePassTitle">🧯 حريق مبنى / منشأة / طفاية الحريق (PASS)</h3><p id="firePassDesc">استخدام طفاية الحريق وقاعدة PASS، والهروب تحت سحب الدخان السام.</p></div>
-<div class="card fire" onclick="openSec('oilfire')"><h3 id="oilFireTitle">🍳 حرائق الزيوت والكهرباء / مصعد (Kitchen / Elevator)</h3><p id="oilFireDesc">تغطية طاسة الزيت بغطاء معدني (ممنوع الماء)، والتعامل مع الاحتجاز بالمصاعد.</p></div>
-<div class="card fire" onclick="openSec('collapse')"><h3 id="collapseTitle">🏚️ انهيار مبنى / زلزال / انفجار (Collapse)</h3><p id="collapseTitleDesc">قاعدة انخفض، احتمِ، تمسك، وطرق الأنابيب تحت الأنقاض.</p></div>
-</div>
-
-<div class="cat-title" id="cat4Title">4. المواد الخطرة والكيميائية (Hazmat Emergencies)</div>
-<div class="grid">
-<div class="card hazmat" onclick="openSec('hazmatsec')"><h3 id="hazmatTitle">☢️ تسرب غاز / مواد كيميائية / إشعاع (Gas & Hazmat)</h3><p id="hazmatDesc">الابتعاد عكس اتجاه الرياح، إحكام غلق الأبواب والنوافذ، وعدم إشعال أي مصدر نار.</p></div>
-</div>
-
-<div class="cat-title" id="cat5Title">5. الكوارث الطبيعية والبيئية (Natural Disasters)</div>
-<div class="grid">
-<div class="card nature" onclick="openSec('naturesec')"><h3 id="natureTitle">🌊 فيضان / سيول / عاصفة شديدة (Floods & Storms)</h3><p id="natureDesc">الارتفاع للأماكن المرتفعة، الابتعاد عن أعمدة الإنارة ومجرى السيول.</p></div>
-</div>
-
-<div class="cat-title" id="cat6Title">6. الحالات الأمنية والجنائية (Security & Police)</div>
-<div class="grid">
-<div class="card police" onclick="openSec('securitysec')"><h3 id="secTitle">🚨 اعتداء / إطلاق نار / تهديد قنبلة (Security)</h3><p id="secDesc">الاحتماء الفوري (Run, Hide, Fight)، الاتصال بالنجدة 122، وعدم الاقتراب من الأجسام المشبوهة.</p></div>
-</div>
-
-<div class="cat-title" id="cat7Title">7. طوارئ المرافق والخدمات (Utilities & Infrastructure)</div>
-<div class="grid">
-<div class="card utility" onclick="openSec('utilitysec')"><h3 id="utilTitle">⚡ انقطاع تيار شامل / أسلاك مقطوعة / ماسورة مياه (Utilities)</h3><p id="utilDesc">الابتعاد عن الأسلاك الساقطة تماماً، إبلاغ طوارئ المرافق (121 / 129)، وترشيد استهلاك الطوارئ.</p></div>
-</div>
-
-<div class="cat-title" id="catHospitalTitle">8. دليل مستشفيات الطوارئ والمحافظات (Hospitals Directory)</div>
-<div class="grid">
-<div class="card utility" onclick="openSec('hospitalsDirectory')">
-<h3 id="hospCardTitle">🏥 دليل مستشفيات الطوارئ بجميع المحافظات (حكومي وخاص)</h3>
-<p id="hospCardDesc">قاعدة بيانات المستشفيات، أرقام الخط الساخن، وتوجيهات الخرائط فوراً.</p>
-</div>
-</div>
-</div>
-
-<!-- ================= صفحات تفاصيل وحالات الطوارئ (تفاصيل من الألف للياء) ================= -->
-
-<div id="cpr" class="details">
-<h2>❤️ الإنعاش القلبي الرئوي (CPR) <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ متى تطبق؟ عندما يكون المصاب فاقداً للوعي تماماً، لا يتنفس طبيعياً أو يعاني من حشرجة غريبة. يحظر استخدامه لو المصاب يتنفس بشكل طبيعي تماماً.<br>⏳ يستمر الإنعاش بلا توقف لحين وصول الفريق الطبي (خلال 10-15 دقيقة عادةً) أو عودة النفس.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>تأمين المكان وتقييم الاستجابة</h4><p>تأكد من عدم وجود خطر حولك (كهرباء، سيارات). هز كتفي المصاب بقوة وناديه بصوت عالٍ: "يا فلان سامعني؟". إن لم يستجب، تحقق من حركة الصدر لـ 10 ثوانٍ كحد أقصى.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>وضعية اليدين وعمودية الجسم</h4><p>اجعل المصاب مستلقياً على ظهرة فوق سطح صلب تماماً (الأرض وليس السرير). ضع كعب إحدى يديك في منتصف عظمة القص (منتصف الصدر بين الحلمتين) ويد الأخرى فوقها وشبك أصابعك. اجعل ذراعيك مستقيمتين تماماً وعموديتين فوق صدر المصاب مباشرة.</p></div></div>
-<div class="step"><div class="pic">3️⃣</div><div class="txt"><h4>الضغطات السريعة المنتظمة والعمق</h4><p>اضغط للأسفل بعمق 5 إلى 6 سم بقوة، وبمعدل سريع وثابت من 100 إلى 120 ضغطة في الدقيقة (بنفس إيقاف أغنية Stayin' Alive). لا ترفع يدك عن الصدر بالكامل بين الضغطات لضمان تدفق الدم للمخ والقلب.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn1">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="heart" class="details">
-<h2>💔 أزمة قلبية / ألم حاد بالصدر <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ علاماتها: ألم ضاغط أو حارق بمنتصف الصدر يسمع بالذراع الأيسر أو الفك، وعرق بارد وغثيان.<br>⏳ يستقر المريض مؤقتاً بالجلوس الهادئ وتخفيف الضغط خلال 5 دقائق، لكن يلزم التوجه للمستشفى فوراً خلال ساعة لنقاذ عضلة القلب.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الجلوس شبه المائل وإيقاف المجهود</h4><p>أوقف المريض فوراً عن أي حركة وأجلسه في وضعية مريحة (شبه مائل مع دعم ظهره بوسائد) لتقليل المجهود والضغط على عضلة القلب.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>توسيع الملابس وتوفير الهواء</h4><p>فك أي أزرار أو ملابس ضيقة حول العنق والصدر، وابعد أي تجمهر بشري حوله لتوفير أكسجين وتهوية نظيفة.</p></div></div>
-<div class="step"><div class="pic">3️⃣</div><div class="txt"><h4>اتصال الإسعاف والأدوية</h4><p>اتصل بالإسعاف (123) فوراً. إن كان مريض قلب ولديه أدوية خاصة موصوفة له مسبقاً (مثل بخاخ النترات أو حبة أسبرين للمضغ)، ساعده في تناولها، ولا تدعه يمشي بمفرده قط.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn2">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="stroke" class="details">
-<h2>🧠 السكتة الدماغية (بروتوكول FAST) <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ قاعدة هامة جداً: كل دقيقة تتأخر فيها تفقد خلايا المخ ملايين الخلايا العصبية (الوقت يعني خلايا مخ حية).<br>⏳ الإسعاف يجب أن ينقله لمستشفى بها أشعة مقطعية وطوارئ مخ واعصاب خلال أقصى 3 ساعات من بداية الأعراض.</div>
-<div class="step"><div class="pic">F</div><div class="txt"><h4>فحص الوجه (Face Drooping)</h4><p>اطلب من المصاب أن يبتسم؛ لاحظ جيداً هل يوجد هبوط أو اعوجاج في أحد جانبي الفم؟</p></div></div>
-<div class="step"><div class="pic">A</div><div class="txt"><h4>فحص الذراعين (Arm Weakness)</h4><p>اطلب منه رفع ذراعيه الاثنتين للأمام؛ هل تسقط إحداهما تلقائياً دون قدرة على رفعها؟</p></div></div>
-<div class="step"><div class="pic">S & T</div><div class="txt"><h4>فحص الكلام والوقت (Speech & Time)</h4><p>اطلب منه ترديد جملة بسيطة ولاحظ هل كلامه غير واضح أو متلعثم؟ لو ظهر أي اختبار إيجابي، اتصل بـ 123 فوراً، وممنوع إعطاؤه أي طعام أو ماء نهائياً لعدم دخول السوائل لرئتيه.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn3">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="choke" class="details">
-<h2>🫁 صعوبة حادة بالتنفس / اختناق <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ كيف تعرف الاختناق التام؟ المصاب غير قادر على الكلام، لا يخرج صوتاً، لا يستطيع السعال، ويوضع يديه الاثنتين حول رقبته بعلامة عالمية للاختناق.<br>⏳ يتم تطبيق المناورة لحين طرد الجسم الغريب (خلال 30 إلى 60 ثانية عادةً).</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الوقوف الخلفي ولف الذراعين</h4><p>قف خلف الشخص المختنق تماماً، لف ذراعيك حول خصره، وميل جسمه للأمام برفق.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>تثبيت قبضة البطن</h4><p>اعقد قبضة يدك اليمنى وضعها فوق بطنه في المسافة الواقعة تماماً بين السرة ونهاية القفص الصدري، وأمسك قبضتك بيدك اليسرى الأخرى بقوة.</p></div></div>
-<div class="step"><div class="pic">3️⃣</div><div class="txt"><h4>الضغطات الحادة للداخل وللأعلى</h4><p>قم بعمل ضغطات سريعة وقوية جداً للداخل وللأعلى (مثل حركة رفع الشخص للأعلى) بشكل متكرر حتى يندفع الهواء ويطرد الجسم الغريب. إن فقد وعيه، قم بتمديده فوراً وابدأ بالإنعاش القلبي (CPR).</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn4">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="bleed" class="details">
-<h2>🩸 نزيف حاد / الرعاف <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ احمِ نفسك بارتداء قفازات بلاستيكية لمنع انتقال أي أمراض معدية عبر الدم.<br>⏳ يتوقف النزيف الطبيعي بالضغط المستمر خلال 10-15 دقيقة متواصلة.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الضغط المباشر والضمادات</h4><p>اكشف مكان الجرح بوضوح، ضع فوقه قطعة شاش نظيف ومعقم أو قماش نظيف، واضغط بقوة وثبات براحة يدك لمدة 10 إلى 15 دقيقة متواصلة **بدون رفع اليد أبداً** للاطمئنان لأن رفع اليد يكسر التجلط المبدئي.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>التعامل مع نزيف الأنف (الرعاف)</h4><p>أجلس المصاب وميل رأسه للأمام قليلاً (ممنوع إرجاع الرأس للخلف لكي لا يبتلع الدم فيتسبب في قيء)، واضغط بإصبعك على الجزء اللين (الغضروفي) من الأنف لمدة 10 دقائق متصلة حتى يتوقف النزيف.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn5">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="faint" class="details">
-<h2>😵 فقدان الوعي / إغماء <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ ممنوع منعاً باتاً محاولة إيقاظه برش الماء على وجهه أو إعطائه عصير وهو فاقد للوعي تماماً لتفادي الاختناق.<br>⏳ يفيق المصاب عادةً بمجرد عودة الدم للدماغ خلال دقيقة إلى 3 دقائق.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>التمديد ورفع الساقين</h4><p>مدد المصاب على ظهره فوق سطح أرضي مستوٍ وآمن، وارفع ساقيه للأعلى بمسافة 30 سم (باستخدام حقيبة أو وسادة) لمساعدة الدم المحتجز بالساقين على العودة السريعة للقلب والمخ.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>فك القيود وتوفير الهواء</h4><p>فك أزرار القميص الضيقة، ربطة العنق، أو الأحزمة حول الخصر لتسهيل التنفس. وفّر تهوية جيدة بالمكان، وعند إفاقته دعه يرتاح مستلقياً لعدة دقائق قبل النهوض.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn6">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="seizure" class="details">
-<h2>⚡ نوبات الصرع والتشنجات <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ ممنوع تماماً تقييد حركة المصاب بالقوة، وممنوع وضع أي جسم أو ملعقة بين أسنانه نهائياً لأن ذلك يكسر أسنانه ويؤذيه.<br>⏳ تنتهي النوبة التشنجية عادة في غضون دقيقتين إلى 3 دقائق تلقائياً.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>تأمين محيط المصاب وحمايته</h4><p>أبعد أي كراسي، طاولات، أو أدوات حادة من حوله لكي لا يصطدم بها أثناء التشنج. ضع وسادة أو ملابس مطوية تحته رأسه لحمايته من الارتطام بالأرض الصلبة.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>وضع الإفاقة الجانبي بعد النوبة</h4><p>بمجرد توقف التشنجات وارتخاء الجسم، اقلب المصاب برفق على جانبه (وضع الإفاقة) لفتح مجرى التنفس ومنع اختناقه باللعاب أو القيء. ابقَ معه لحين وعيه الكامل.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn7">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="poison" class="details">
-<h2>🧪 تسمم / جرعة زائدة <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ تحذير صارم: يحظر تماماً إجبار المريض على التقيؤ إذا بلع مواد كاوية (فلاش، كلور، أحماض) أو مواد بترولية (بنزين، جاز) لأنها تحرق المريء والحنجرة مرتين.<br>⏳ التوجه الفوري لمركز السموم خلال أول ساعة يحسّن نسبة النجاة 90%.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>حماية المسعف وتقييم الحالة</h4><p>تأكد من سلامتك أولاً ولا تعرض نفسك لاستنشاق أبخرة سامة. حاول معرفة نوع المادة المبتلعة واحتفظ بالعبوة الفارغة أو بقايا السم بكي يقدمها الأطباء بالمستشفى.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>الاتصال بمركز السموم أو الإسعاف</h4><p>اتصل فوراً برقم الطوارئ أو مركز السموم، واتبع إرشاداتهم بدقة أثناء نقل المصاب لأقرب مستشفى طوارئ سموم فورا.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn8">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="anap" class="details">
-<h2>🐝 حساسية مفرطة / صدمة تأقية (Anaphylaxis) <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ صدمة الحساسية طوارئ قاتلة تتطور خلال دقائق بسبب تورم الحلق وانخفاض حاد بالضغط.<br>⏳ الاستجابة السريعة بالحقنة تظهر نتيجتها خلال 3 إلى 5 دقائق.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>إبعاد المسبب واستخدام حقنة الإبينفرين</h4><p>ابحث عن سبب الحساسية (لدغة نحلة، أكلة معينة، دواء) وأبعده فورا. إذا كان المصاب يمتلك قلم إبينفرين ذاتي (EpiPen)، ساعده فوراً في نزع الغطاء وغرسه بقوة في العضلة الخارجية للفخذ حتى مع وجود الملابس.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>طلب الإسعاف الفوري والوضع الآمن</h4><p>اتصل بـ 123 فوراً. اجعل المصاب مستلقياً على ظهره مع رفع ساقيه (إلا لو كان يعاني من صعوبة بالغة في التنفس فيجلس شبه مائل). راقب علاماته الحيوية.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn9">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="burns" class="details">
-<h2>🔥 حروق شديدة / ضربة شمس <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ خطأ شائع يجب تجنبه: ممنوع منعاً باتاً وضع ثلج مباشر، معجون أسنان، زيوت، أو مراهم شعبية على الحرق الطازج لأنه يدمر الأنسجة ويسبب عدوى.<br>⏳ التبريد بالماء الفاتر يخفف الألم ويوقف تلف الجلد خلال 15 دقيقة.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>التبريد بالماء الجاري الفاتر</h4><p>عرّض مكان الحرق لماء فاتر جارٍ (وليس مثلجاً أبداً) لمدة 10 إلى 15 دقيقة متواصلة لخفض حرارة الجلد العميقة وتسكين الألم.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>نزع الإكسسوارات وتغطية الجرح</h4><p>انزع أي خواتم، ساعات، أو ملابس ضيقة قريبة من مكان الحرق برفق قبل حدوث التورم. غطِّ الحرق بقطعة قماش نظيفة ومعقمة أو شاش جاف ولا تقم بفقء فقاعات الحرق نهائياً.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn10">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="fracture" class="details">
-<h2>🦴 كسور مضاعفة أو إصابات العمود الفقري <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ تحذير خطير جداً: تحريك مصاب لديه كسر في العمود الفقري أو الرقبة بطريقة خاطئة قد يسبب له شللاً نصفياً أو كلياً مدى الحياة!<br>⏳ يجب تثبيت الطرف المكسور فوراً لحين وصول المسعفين المتخصصين.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>عدم تحريك العظم البارز</h4><p>لا تحاول أبداً محاولة رد العظم المكسور أو البارز للداخل مكانه. اترك العظم على وضعيته الحالية.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>تثبيت الطرف بجبيرة مؤقتة</h4><p>قم بتثبيت المفصلين الواقعين فوق وتحت الكسر باستخدام ألواح خشبية صلبة، كرتون مقوى، أو وسائد مربوطة برفق لمنع الحركة، وامتنع عن تحريك المصاب تماماً إن كانت الإصابة بالظهر أو الرقبة.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn11">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="drown" class="details">
-<h2>🌊 غرق أو شبه غرق <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ أولوية أولى: سلامتك الشخصية؛ لا تنزل لمياه عميقة إن لم تكن سباحاً منقذاً محترفاً.<br>⏳ بدء الإنعاش فوراً يرفع نسبة النجاة وعودة وظائف الدماغ بصورة مذهلة.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الإنقاذ والإخراج لسطح صلب</h4><p>أخرج الغريق بحذر إلى الشاطئ أو اليابسة وثبته على سطح مستوٍ. افحص التنفس والنبض في أقل من 10 ثوانٍ.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>الإنعاش الرئوي وتدفئة الجسم</h4><p>إن كان فاقداً للوعي ولا يتنفس طبيعياً، ابدأ فوراً بعمل الإنعاش القلبي الرئوي (CPR). انزع ملابسه المبتلة ودفئه بغطاء جاف تدريجياً لتقليل صدمة البرد لحين وصول الإسعاف.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn12">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="electrocute" class="details">
-<h2>⚡ صعق كهربائي <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ قاعدة الموت: لا تلمس المصاب بيديك عاريتين قط وهو متصل بمصدر الكهرباء لكي لا تصعق مثله.<br>⏳ فحص عضلة القلب بالمستشفى ضروري خلال الساعات التالية للصعق للاطمئنان على كهرباء القلب.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>فصل التيار الكهربائي الرئيسي</h4><p>توجه فوراً للوحة الكهرباء العمومية وافصل المفتاح الرئيسي. إن تعذر، أبعد السلك الكهربائي عن المصاب باستخدام مادة عازلة جافة تماماً (عصا خشبية سميكة، مقشة بلاستيكية جافة، أو كرسي خشبي).</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>فحص التنفس والبدء بالإنعاش</h4><p>بعد التأكد من الأمان التام وفصل الكهرباء، افحص التنفس والوعي، وابدأ ضغطات الصدر للإنعاش (CPR) فوراً إن توقف تنفسه، ثم انقل للطوارئ.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn13">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="hypo" class="details">
-<h2>❄️ غيبوبة سكر / انخفاض حرارة الجسم <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ قاعدة ذهبية طبية: لو المريض واعي أعطه سكريات، لو فاقد للوعي تماماً ممنوع إعطاؤه أي شيء بالفم نهائياً لتفادي الاختناق.<br>⏳ يستجيب مريض هبوط السكر ويعود لوعيه خلال 5 إلى 10 دقائق بعد تناول السكريات.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>معالجة هبوط السكر (والمصاب واعي)</h4><p>إذا كان المصاب يعاني من رعشة وعرق بارد لكنه واعٍ: أذيب 3 ملاعق سكر في ماء أو أعطه عصير محلى مركز أو ملعقة عسل نحل كبيرة لترتفع مستويات السكر بالدم بسرعة.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>التعامل مع الغيبوبة التامة</h4><p>إذا كان المريض فاقداً للوعي كلياً، لا تحاول صب أي سوائل بفمه. ضعه في وضع الإفاقة الجانبي واتصل بالإسعاف فوراً لنقله وضبط السكر بالمحاليل الطبية الوريدية.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn14">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="bites" class="details">
-<h2>🦂 لدغات سامة (ثعابين وعقارب) <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ أخطاء شائعة تقتل المصاب: ممنوع جرح مكان اللدغة بالسكين، ممنوع محاولة مص السم بالفم، وممنوع ربط حزام ضاغط (تورنيكيت) يمنع الدم كلياً.<br>⏳ الهدوء التام يبطئ انتشار السم بالدم لمدة تصل لساعة لحين أخذ المصل.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الهدوء التام وتثبيت الطرف</h4><p>أجلس المصاب واجعله هادئاً تماماً لتقليل ضربات القلب وسرعة انتشار السم. ثبّت العضو المصاب واجعله في وضعية **أقل من مستوى القلب**.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>إزالة المجوهرات والتوجه للمستشفى</h4><p>انزع أي خواتم، ساعات، أو أساور ضيقة في الطرف المصاب فوراً قبل حدوث تورم شديد، وانقل المصاب لأقرب مستشفى أو مركز سموم للحصول على المصل المضاد للسموم.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn15">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="caraccident" class="details">
-<h2>🚗 تصادم مركبات / دهس / انقلاب <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ ممنوع التدخين نهائياً أو إشعال أي لهب قرب السيارات المتصادمة لوجود تسرب بترولي خفي.<br>⏳ تأمين موقع الحادث يحمي باقي السيارات ويمنع وقوع كارثة جماعية تالية.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>تأمين موقع الحادث وإيقاف المحركات</h4><p>أوقف السيارات المصادمة عن العمل وافتح أضواء الانتظار، ضع مثلث التحذير العاكس على مسافة كافية خلف السيارات لتنبيه القادمين.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>طلب الإسعاف وعدم تحريك المصابين</h4><p>اتصل بـ 123 و122 فوراً. لا تقم بتحريك المصابين من داخل حطام السيارات إلا إذا كان هناك خطر حريق وشيك، وقدم إسعافات النزيف الظاهري فقط لحين وصول الطوارئ.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn16">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="trainmarine" class="details">
-<h2>🚆 حادث قطار أو بحري / غرق مركب <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ الالتزام بالتعليمات الهادئة يمنع التدافع البشري الذي يسبب إصابات أضعاف الحادث الأصلي.<br>⏳ الاستجابة السريعة تخلي الركاب لمنطقة الأمان خلال دقائق معدودة.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>حوادث السكك الحديدية</h4><p>ابتعد فوراً وبمسافة لا تقل عن 50 متراً عن قضبان السكة الحديدية وخطوط القطارات ولا تعود لمنطقة الخطر نهائياً.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>الحوادث البحرية وغرق المركب</h4><p>ارتدِ سترة النجاة (Life Jacket) فوراً، واتبع تعليمات قبطان السفينة أو فرق الإنقاذ النهري/البحري للوصول لأسطح وقوارب النجاة الآمنة.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn17">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="firepass" class="details">
-<h2>🧯 حريق مبنى / طفاية الحريق (قاعدة PASS) <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ قاعدة ذهبية: سلامتك أهم من المبنى؛ لو الحريق انتشر واشتعل بقوة، اخرج فوراً وأغلق الباب خلفك واترك المكافحة لرجال المطافئ.<br>⏳ إطفاء الحريق في بدايته يستغرق أقل من دقيقة باستخدام الطفاية.</div>
-<div class="step"><div class="pic">P-A</div><div class="txt"><h4>سحب المسمار والتوجيه (Pull & Aim)</h4><p>اسحب مسمار الأمان الموجود في مقبض طفاية الحريق (Pull). صوّب خرطوم الطفاية بتركيز نحو **قاعدة النيران** وليس نحو ألسنة اللهب المرتفعة في الأعلى (Aim).</p></div></div>
-<div class="step"><div class="pic">S-S</div><div class="txt"><h4>الضغط والتحريك الأفقي (Squeeze & Sweep)</h4><p>اضغط على المقبض بقوة لإخراج المادة المطفأة (Squeeze)، وحرك الخرطوم بانتظام يميناً ويساراً بتغطية كامل قاعدة النار (Sweep). اتصل بالمطافئ 180.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn18">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="oilfire" class="details">
-<h2>🍳 حرائق الزيوت والكهرباء / تعطل المصاعد <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ كارثة محققة: صب الماء على طاسة زيت مغلي ومشتعل يتسبب في تبخر الماء لحظياً وانفجار كرة نار ضخمة تحرق المكان والناس!<br>⏳ تغطية الطاسة تقطع الأكسجين وتخمد الحريق خلال 10 ثوانٍ.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>إخماد حريق الزيوت بالمطبخ</h4><p>أطفئ مصدر النار من البوتاجاز فوراً. غطِّ طاسة الزيت الملتهبة بغطاء معدني محكم أو صينية كبيرة لقطع الأكسجين تماماً (**ممنوع الماء نهائياً**).</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>التعامل مع تعطل واحتجاز المصاعد</h4><p>اضغط زر الإنذار والطوارئ بالكبينة بانتظام. لا تقم بمحاولة فتح باب المصعد الخارجي بقوة بنفسك لتفادي السقوط في بئر المصعد، وتواصل بهدوء مع الصيانة أو الدفاع المدني.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn19">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="collapse" class="details">
-<h2>🏚️ انهيار مبنى / زلزال / انفجار <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ أثناء الزلازل: ممنوع استخدام المصاعد الكهربائية نهائياً وممنوع النزول على السلالم أثناء الهزة.<br>⏳ الهزات الأرضية القوية تستمر غالباً من 10 إلى 30 ثانية فقط.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>قاعدة النجاة أثناء الزلزال (انخفض واحمِ نفسك)</h4><p>انخفض على ركبتيك على الأرض، احتمِ تحت طاولة أو مكتب صلب جداً أو بجانب جدار خرساني متين، وتمسك بأرجل الطاولة جيداً لحماية رأسك وجذعك من تساقط الأنقاض.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>التصرف الصحيح تحت الأنقاض</h4><p>لا تصرخ بصوت عالٍ عبثاً لكي لا تستنشق مسحوق الغبار والتراب فيخنقك. حافظ على هدوئك واطرق بقطعة معدنية على أنابيب الصرف أو الحوائط بانتظام لكي يسمعك فريق الإنقاذ.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn20">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="hazmatsec" class="details">
-<h2>☢️ تسرب غاز / مواد كيميائية / إشعاع <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ ممنوع قطعاً إشعال ولاعة، كبريت، أو تشغيل مفتاح الكهرباء عند شم رائحة غاز لأن الشرارة البسيطة تكفي لتفجير المكان بالكامل!<br>⏳ إحكام الغلق والهروب عكس الرياح ينقذ حياتك فوراً.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الهروب عكس اتجاه الرياح وإغلاق المحابس</h4><p>تحرك فوراً وابتعد عن مكان التسرب واجري في **عكس اتجاه هبوب الرياح**. أغلق محبس الغاز الرئيسي والكهرباء إن كان مفتاحها بعيداً عن مكان التسرب.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>الابتعاد والاتصال بالطوارئ</h4><p>أحكم إغلاق الأبواب والنوافذ خلفك لتقليل الانتشار، واتصل بطوارئ الغاز (129) أو الدفاع المدني من مكان آمن تماماً في الشارع.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn21">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="naturesec" class="details">
-<h2>🌊 فيضان / سيول / عاصفة شديدة <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ حقيقة مرعبة: ارتفاع مياه السيول لـ 15 سم فقط كفيل بجرف شخص، و30 سم كفيل بجرف سيارة كاملة وتحريكها.<br>⏳ الارتفاع للأماكن المرتفعة يحميك من فجائية تدفق المياه.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الهروب للمرتفعات والابتعاد عن مجاري السيول</h4><p>اترك المنخفضات ومجاري السيول فوراً وتوجه نحو الأماكن المرتفعة أو الطوابق العليا من المباني الخرسانية الصلبة.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>تجنب السير في المياه وأعمدة الإنارة</h4><p>لا تقود سيارتك في طرق مغمورة بالمياه الجارية، وابتعد تماماً عن أعمدة الإنارة والأسلاك الملامسة للمياه لتفادي الصعق المميت.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn22">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="securitysec" class="details">
-<h2>🚨 اعتداء / إطلاق نار / تهديد قنبلة <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ قاعدة النجاة العالمية المعتمدة: (اهرب - اختبئ - واجه كملجأ أخير).<br>⏳ التخفي المحكم يمنع كشف مكانك حتى وصول قوات الأمن والنجدة.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الهروب أو الاختباء المحكم</h4><p>إن كان هناك طريق آمن للهرب فاهرب فوراً ولا تنتظر أحداً. إن تعذر الهروب، اختبئ في غرفة محكمة الغلق، أغلق الباب بالمفتاح، أطفئ أنوار الغرفة، واجعل هاتفك على وضع الصامت تماماً.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>المواجهة كملجأ أخير واتصال النجدة</h4><p>دافع عن نفسك بكل شراسة وبأي أداة متاحة فقط إذا وصل الخطر إليك مباشرة. اتصل برقم النجدة (122) فور توفر الأمان التام ولا تقترب من أي أجسام غريبة.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn23">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<div id="utilitysec" class="details">
-<h2>⚡ انقطاع تيار شامل / أسلاك مقطوعة <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ قاعدة حديدية: اعتبر أي سلك كهربائي ساقط على الأرض أو متعلق في الشارع على أنه مكهرب ومميت بنسبة 100%.<br>⏳ الإبلاغ الفوري يمنع وقوع إصابات جماعية بالمواطنين.</div>
-<div class="step"><div class="pic">1️⃣</div><div class="txt"><h4>الابتعاد التام عن الأسلاك الساقطة</h4><p>ابقَ بعيداً بمسافة لا تقل عن 10 أمتار عن أي سلك كهربائي مقطوع على الأرض، وحذر المارة والطفال من الاقتراب منه نهائياً.</p></div></div>
-<div class="step"><div class="pic">2️⃣</div><div class="txt"><h4>إبلاغ طوارئ المرافق</h4><p>أبلغ فوراً الخط الساخن لطوارئ الكهرباء (121) أو طوارئ المحافظة ومياه الشرب، وابقَ بعيداً لحين وصول فرق الإصلاح المتخصصة.</p></div></div>
-<button class="back" onclick="goHome()" id="backBtn24">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-<!-- دليل المستشفيات الشامل حسب المحافظات -->
-<div id="hospitalsDirectory" class="details">
-<h2>🏥 دليل مستشفيات الطوارئ بجميع المحافظات (حكومي وخاص) <button class="read-sec-btn" onclick="speakInstructions()">🔊 استمع للحالة</button></h2>
-<div class="warn-box">⚠️ اختر المحافظة وابحث بالاسم لعرض أقرب المستشفيات، مع أرقام الطوارئ وخرائط الموقع فوراً.</div>
-
-<div style="background:#1b263b; padding:15px; border-radius:10px; margin-bottom:15px; border:2px solid var(--gold);">
-<label style="color:var(--gold-light); font-weight:bold; display:block; margin-bottom:8px;">📍 اختر المحافظة لعرض مستشفياتها:</label>
-<select id="govSelect" onchange="filterHospitalsByGov()" style="width:100%; padding:10px; border-radius:6px; font-size:14px; border:1px solid var(--gold); background:#fff; outline:none; margin-bottom:10px;">
-<option value="cairo">القاهرة (Cairo)</option>
-<option value="giza">الجيزة (Giza)</option>
-<option value="alex">الإسكندرية (Alexandria)</option>
-</select>
-<input type="text" id="hospSearchInput" onkeyup="filterHospCards()" placeholder="🔍 ابحث باسم المستشفى داخل المحافظة..." style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--gold); font-size:13px; outline:none; box-sizing:border-box;">
-</div>
-
-<div id="hospitalsContainer">
-<div class="gov-group" data-gov="cairo">
-<div style="background:#e8f4f8; padding:12px; border-radius:8px; margin-bottom:12px; border-right:4px solid #1565c0;">
-<h3 style="margin:0 0 5px; color:#1565c0;">🏛️ مستشفيات القاهرة الحكومية والجامعية والخاصة</h3>
-<div class="hosp-item" style="background:#fff; padding:10px; border-radius:6px; margin-bottom:8px; border:1px solid #ccc;">
-<h4 style="margin:0 0 4px; color:#b71c1c;">1. قصر العيني (جامعة القاهرة)</h4>
-<p style="margin:0; font-size:13px;">📍 المنيل | طوارئ شاملة، سموم، وحروق</p>
-<div style="margin-top:6px; display:flex; gap:8px;"><a href="tel:0223654040" style="background:#b71c1c; color:#fff; padding:4px 10px; border-radius:4px; text-decoration:none; font-size:12px;">📞 اتصال</a><a href="https://maps.google.com/?q=Kasr+Al+Ainy+Hospital" target="_blank" style="background:#1565c0; color:#fff; padding:4px 10px; border-radius:4px; text-decoration:none; font-size:12px;">🗺️ خريطة</a></div>
-</div>
-<div class="hosp-item" style="background:#fff; padding:10px; border-radius:6px; margin-bottom:8px; border:1px solid #ccc;">
-<h4 style="margin:0 0 4px; color:#b71c1c;">2. مستشفى الدمرداش الجامعي</h4>
-<p style="margin:0; font-size:13px;">📍 غمرة | طوارئ وجراحات دقيقة</p>
-<div style="margin-top:6px; display:flex; gap:8px;"><a href="tel:0226831474" style="background:#b71c1c; color:#fff; padding:4px 10px; border-radius:4px; text-decoration:none; font-size:12px;">📞 اتصال</a><a href="https://maps.google.com/?q=Demerdash+Hospital" target="_blank" style="background:#1565c0; color:#fff; padding:4px 10px; border-radius:4px; text-decoration:none; font-size:12px;">🗺️ خريطة</a></div>
-</div>
-</div>
-</div>
-<div class="gov-group" data-gov="giza" style="display:none;">
-<div style="background:#e8f4f8; padding:12px; border-radius:8px; margin-bottom:12px; border-right:4px solid #1565c0;">
-<h3 style="margin:0 0 5px; color:#1565c0;">🏛️ مستشفيات الجيزة</h3>
-<div class="hosp-item" style="background:#fff; padding:10px; border-radius:6px; margin-bottom:8px; border:1px solid #ccc;">
-<h4 style="margin:0 0 4px; color:#b71c1c;">1. مستشفى الهرم التخصصي</h4>
-<p style="margin:0; font-size:13px;">📍 شارع الهرم | طوارئ وحوادث الجيزة</p>
-<div style="margin-top:6px; display:flex; gap:8px;"><a href="tel:0233845016" style="background:#b71c1c; color:#fff; padding:4px 10px; border-radius:4px; text-decoration:none; font-size:12px;">📞 اتصال</a><a href="https://maps.google.com/?q=Al+Haram+Hospital" target="_blank" style="background:#1565c0; color:#fff; padding:4px 10px; border-radius:4px; text-decoration:none; font-size:12px;">🗺️ خريطة</a></div>
-</div>
-</div>
-</div>
-</div>
-
-<button class="back" onclick="goHome()" id="backBtnHosp">⬅ العودة للقائمة الرئيسية</button>
-</div>
-
-</div><!-- End Container -->
-
-<!-- نافذة لعبة المسعف التفاعلية -->
-<div id="quizModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999; justify-content:center; align-items:center;">
-<div style="background:#fff; padding:22px; border-radius:12px; max-width:420px; width:90%; text-align:center; border:3px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-<h3 style="color:#b71c1c; margin-top:0; font-size:18px;">🧠 تحدي المسعف الذكي</h3>
-<p id="quizScoreText" style="font-size:12px; color:#555; margin-bottom:10px; font-weight:bold;">السؤال <span id="qNum">1</span> من 3</p>
-<p id="quizQuestion" style="font-size:14.5px; color:#222; font-weight:650; line-height:1.4; min-height:45px;"></p>
-<div id="quizOptions" style="display:flex; flex-direction:column; gap:9px; margin-top:15px;"></div>
-<p id="quizResult" style="font-weight:bold; margin-top:12px; font-size:14px; min-height:25px;"></p>
-<div style="display: flex; gap: 8px; justify-content: center; margin-top: 12px;">
-<button id="nextQuizBtn" onclick="nextQuizQuestion()" style="display:none; padding:8px 16px; background:#1565c0; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:bold; font-size:13px;">السؤال التالي ➡️</button>
-<button onclick="closeQuiz()" style="padding:8px 16px; background:#333; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:bold; font-size:13px;">إغلاق التحدي ❌</button>
-</div>
-</div>
-</div>
-
-<footer>
-<p>تم تطوير وبرمجة هذه الموسوعة بكل إتقان بواسطة <span>مينا وجدي يونان</span> &copy; 2026</p>
-</footer>
-
-<script>
-function openSec(id) {
-document.getElementById('menu').style.display = 'none';
-document.querySelector('.search-box').style.display = 'none';
-document.getElementById('advancedTools').style.display = 'none';
-document.querySelectorAll('.cat-title').forEach(c => c.style.display = 'none');
-document.querySelectorAll('.details').forEach(d => d.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function goHome() {
-document.querySelectorAll('.details').forEach(d => d.classList.remove('active'));
-document.getElementById('menu').style.display = 'block';
-document.querySelector('.search-box').style.display = 'block';
-document.getElementById('advancedTools').style.display = 'block';
-document.querySelectorAll('.cat-title').forEach(c => c.style.display = 'block');
-window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function filterCards() {
-let query = document.getElementById('searchInput').value.toLowerCase();
-let cards = document.querySelectorAll('.card');
-cards.forEach(card => {
-let text = card.innerText.toLowerCase();
-card.style.display = text.includes(query) ? 'block' : 'none';
-});
-}
-
-function filterHospitalsByGov() {
-let selectedGov = document.getElementById('govSelect').value;
-let groups = document.querySelectorAll('.gov-group');
-groups.forEach(group => {
-if(group.getAttribute('data-gov') === selectedGov) {
-group.style.display = 'block';
-} else {
-group.style.display = 'none';
-}
-});
-}
-
-function filterHospCards() {
-let query = document.getElementById('hospSearchInput').value.toLowerCase();
-let activeGroup = document.querySelector('.gov-group[style*="block"], .gov-group:not([style*="none"])');
-if(!activeGroup) return;
-let items = activeGroup.querySelectorAll('.hosp-item');
-items.forEach(item => {
-let text = item.innerText.toLowerCase();
-item.style.display = text.includes(query) ? 'block' : 'none';
-});
-}
-
-// قراءة التعليمات صوتياً لأي قسم مفتوح بضغطة زر
-function speakInstructions() {
-let activeDetails = document.querySelector('.details.active');
-if(!activeDetails) {
-alert("⚠️ برجاء فتح قسم طوارئ معين أولاً لتتمكن من قراءة تعليماته!");
-return;
-}
-let textToRead = activeDetails.innerText;
-if ('speechSynthesis' in window) {
-window.speechSynthesis.cancel();
-let utterance = new SpeechSynthesisUtterance(textToRead);
-utterance.lang = currentLang === 'ar' ? 'ar-EG' : 'en-US';
-utterance.rate = 0.95; // سرعة هادئة ومفهومة جداً
-window.speechSynthesis.speak(utterance);
-} else {
-alert("عذراً، خاصية النطق الصوتي غير مدعومة في متصفحك الحالي.");
-}
-}
-
-// بنك أسئلة اللعبة التفاعلية
-const quizData = [
-{
-q: "ما هو التصرف الفوري عند تعامل شخص مصاب بوعي فاقد تماماً ولا يتنفس طبيعياً؟",
-options: [
-"إعطاؤه ماء ومشروبات سكرية فوراً",
-"بدء إجراءات الإنعاش القلبي الرئوي (CPR) فوراً",
-"الانتظار لحين إفاقته بمفرده دون تحريك"
-],
-correct: 1
-},
-{
-q: "عند حدوث حريق زيت في مطبخك (طاسة مقلاة)، ما هو التصرف الخاطئ تماماً الذي يجب تجنبه؟",
-options: [
-"صب الماء فوق طاسة الزيت الملتهبة",
-"تغطية الطاسة بغطاء معدني محكم",
-"إطفاء مصدر الحرارة فوراً"
-],
-correct: 0
-},
-{
-q: "في حالة ظهور أعراض سكتة دماغية مفاجئة (قاعدة FAST)، ما هي الخطوة الأهم الأولى؟",
-options: [
-"إعطاء المريض أقراص مسكنة ومضادة للتهدئة",
-"الاتصال فوراً بالإسعاف (123) والتوجه للطوارئ",
-"جعل المريض يقف ويمشي قليلاً لتنشيط الدورة الدموية"
-],
-correct: 1
-}
-];
-
-let currentQuizIndex = 0;
-
-function openQuiz() {
-currentQuizIndex = 0;
-document.getElementById('quizModal').style.display = 'flex';
-loadQuizQuestion();
-}
-
-function closeQuiz() {
-document.getElementById('quizModal').style.display = 'none';
-}
-
-function loadQuizQuestion() {
-let qObj = quizData[currentQuizIndex];
-document.getElementById('qNum').innerText = currentQuizIndex + 1;
-document.getElementById('quizQuestion').innerText = qObj.q;
-document.getElementById('quizResult').innerText = '';
-document.getElementById('nextQuizBtn').style.display = 'none';
-
-let optionsContainer = document.getElementById('quizOptions');
-optionsContainer.innerHTML = '';
-
-qObj.options.forEach((optText, index) => {
-let btn = document.createElement('button');
-btn.innerText = optText;
-btn.style.cssText = "padding:9px; background:#f5f5f5; border:1px solid #ccc; border-radius:6px; cursor:pointer; font-size:13px; text-align:right; transition:0.2s; font-weight:500;";
-btn.onmouseover = () => btn.style.background = '#e0e0e0';
-btn.onmouseout = () => btn.style.background = '#f5f5f5';
-btn.onclick = () => selectQuizOption(index, qObj.correct, btn);
-optionsContainer.appendChild(btn);
-});
-}
-
-function selectQuizOption(selectedIndex, correctIndex, clickedBtn) {
-let allBtns = document.getElementById('quizOptions').getElementsByTagName('button');
-for(let b of allBtns) { b.disabled = true; }
-
-let res = document.getElementById('quizResult');
-if(selectedIndex === correctIndex) {
-clickedBtn.style.background = '#c8e6c9';
-clickedBtn.style.borderColor = '#2e7d32';
-res.style.color = '#2e7d32';
-res.innerText = '✅ إجابة صحيحة برافو! استجابة طبية ممتازة وصحيحة.';
-} else {
-clickedBtn.style.background = '#ffcdd2';
-clickedBtn.style.borderColor = '#b71c1c';
-res.style.color = '#c62828';
-res.innerText = '❌ إجابة خاطئة. البروتوكول الطبي الصحيح مختلف تماماً.';
-allBtns[correctIndex].style.background = '#c8e6c9';
-allBtns[correctIndex].style.borderColor = '#2e7d32';
-}
-
-if(currentQuizIndex < quizData.length - 1) {
-document.getElementById('nextQuizBtn').style.display = 'inline-block';
-} else {
-res.innerText += ' 🏆 لقد أنهيت كافة أسئلة التحدي بنجاح!';
-}
-}
-
-function nextQuizQuestion() {
-currentQuizIndex++;
-loadQuizQuestion();
-}
-
-// مؤقت النبضات التفاعلي للإنعاش (CPR Metronome)
-function startCprMetronome() {
-alert("❤️ تم تشغيل مؤقت نبضات الإنعاش (110 ضغطة/دقيقة). اضغط بانتظام مع النبضات الآن!");
-let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let count = 0;
-let interval = setInterval(() => {
-if(audioCtx.state === 'suspended') { audioCtx.resume(); }
-let osc = audioCtx.createOscillator();
-let gain = audioCtx.createGain();
-osc.type = 'sine';
-osc.frequency.value = 500;
-osc.connect(gain);
-gain.connect(audioCtx.destination);
-osc.start();
-gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.08);
-osc.stop(audioCtx.currentTime + 0.08);
-count++;
-if(count >= 55) { // يتوقف أوتوماتيكياً بعد حوالي 48 ثانية من الضغط المنتظم
-clearInterval(interval);
-alert("⏱️ انتهت جلسة المؤقت المؤقتة للإنعاش بنجاح.");
-}
-}, 545);
-}
-
-const translations = {
-ar: {
-mainTitle: "موسوعة الفراعنة للطوارئ والإنقاذ الشامل",
-mainSubtitle: "الدليل الشامل والمصور لجميع حالات الطوارئ والكوارث (يعمل بدون إنترنت)",
-searchPlaceholder: "🔍 ابحث عن أي حالة طوارئ...",
-langBtn: "English / العربية",
-numAmbulance: "🚑 إسعاف: 123",
-numFire: "🚒 مطافئ: 180",
-numPolice: "🚓 نجدة: 122",
-numGas: "🔥 طوارئ الغاز: 129",
-numElec: "⚡ طوارئ الكهرباء: 121",
-cat1: "1. الحالات الطبية والإسعافية (Medical Emergencies)",
-cat2: "2. حوادث الطرق والنقل (Traffic & Transport Accidents)",
-cat3: "3. الحرائق والإنقاذ - الدفاع المدني (Fire & Rescue)",
-cat4: "4. المواد الخطرة والكيميائية (Hazmat Emergencies)",
-cat5: "5. الكوارث الطبيعية والبيئية (Natural Disasters)",
-cat6: "6. الحالات الأمنية والجنائية (Security & Police)",
-cat7: "7. طوارئ المرافق والخدمات (Utilities & Infrastructure)",
-catHospital: "8. دليل مستشفيات الطوارئ والمحافظات (Hospitals Directory)",
-cprCard: "❤️ توقف القلب والتنفس (Cardiac Arrest)",
-cprDesc: "التعامل الفوري مع توقف القلب وفقدان الوعي التام والتنفس الصناعي.",
-hospCard: "🏥 دليل مستشفيات الطوارئ بجميع المحافظات (حكومي وخاص)",
-hospDesc: "قاعدة بيانات المستشفيات، أرقام الخط الساخن، وتوجيهات الخرائط فوراً.",
-backText: "⬅ العودة للقائمة الرئيسية"
-},
-en: {
-mainTitle: "Pharaonic Comprehensive Emergency & Rescue Encyclopedia",
-mainSubtitle: "The Comprehensive Illustrated Guide for All Emergencies & Disasters (Offline)",
-searchPlaceholder: "🔍 Search any emergency case...",
-langBtn: "العربية / English",
-numAmbulance: "🚑 Ambulance: 123",
-numFire: "🚒 Fire Dept: 180",
-numPolice: "🚓 Police: 122",
-numGas: "🔥 Gas Emergency: 129",
-numElec: "⚡ Electricity: 121",
-cat1: "1. Medical Emergencies",
-cat2: "2. Traffic & Transport Accidents",
-cat3: "3. Fire & Rescue (Civil Defense)",
-cat4: "4. Hazmat & Chemical Emergencies",
-cat5: "5. Natural Disasters",
-cat6: "6. Security & Police Cases",
-cat7: "7. Utilities & Infrastructure",
-catHospital: "8. Hospitals Directory",
-cprCard: "❤️ Cardiac Arrest",
-cprDesc: "Immediate response to cardiac arrest, total unconsciousness, and CPR.",
-hospCard: "🏥 Emergency Hospitals Directory (Gov & Private)",
-hospDesc: "Hospital database, hotlines, and GPS directions instantly.",
-backText: "Back to Main Menu"
-}
-};
-
-let currentLang = 'ar';
-
-function toggleLanguage() {
-currentLang = (currentLang === 'ar') ? 'en' : 'ar';
-let root = document.getElementById('htmlRoot');
-root.setAttribute('lang', currentLang);
-root.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
-
-let t = translations[currentLang];
-
-document.getElementById('mainTitle').innerText = t.mainTitle;
-document.getElementById('mainSubtitle').innerText = t.mainSubtitle;
-document.getElementById('searchInput').placeholder = t.searchPlaceholder;
-document.getElementById('langToggleBtn').innerText = t.langBtn;
-
-document.getElementById('numAmbulance').innerText = t.numAmbulance;
-document.getElementById('numFire').innerText = t.numFire;
-document.getElementById('numPolice').innerText = t.numPolice;
-document.getElementById('numGas').innerText = t.numGas;
-document.getElementById('numElec').innerText = t.numElec;
-
-document.getElementById('cat1Title').innerText = t.cat1;
-document.getElementById('cat2Title').innerText = t.cat2;
-document.getElementById('cat3Title').innerText = t.cat3;
-document.getElementById('cat4Title').innerText = t.cat4;
-document.getElementById('cat5Title').innerText = t.cat5;
-document.getElementById('cat6Title').innerText = t.cat6;
-document.getElementById('cat7Title').innerText = t.cat7;
-document.getElementById('catHospitalTitle').innerText = t.catHospital;
-
-document.getElementById('cprCardTitle').innerText = t.cprCard;
-document.getElementById('cprCardDesc').innerText = t.cprDesc;
-document.getElementById('hospCardTitle').innerText = t.hospCard;
-document.getElementById('hospCardDesc').innerText = t.hospDesc;
-
-for (let i = 1; i <= 24; i++) {
-let btn = document.getElementById('backBtn' + i);
-if (btn) btn.innerText = t.backText;
-}
-let backBtnHosp = document.getElementById('backBtnHosp');
-if (backBtnHosp) backBtnHosp.innerText = t.backText;
-}
-</script>
+    <div class="container">
+        <h2>🚨 محطة طوارئ نظام NAR 🚨</h2>
+        <p>نظام الاتصال والتعقب الميداني المباشر</p>
+
+        <input type="text" id="senderName" placeholder="اسم المرسل / المحطة" value="محطة الميدان">
+        <input type="text" id="msgText" placeholder="اكتب رسالة الطوارئ هنا...">
+        <button onclick="handleSendClick()">إرسال فوري للسحاب 📡</button>
+
+        <h3>سجل الرسائل الواردة:</h3>
+        <div id="networkFeed">
+            <div class="msg-item">النظام جاهز وفي انتظار الإشارات...</div>
+        </div>
+    </div>
+
+    <!-- كود الاتصال بـ Supabase وربط الإرسال والاستقبال الفوري -->
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+        const SUPABASE_URL = 'https://typtskmgjjajvwlxzxyd.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_f-miTVH0coVNguJAg_PTzQ_pTaA1RmX';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // دالة عرض الرسائل على الشاشة
+        window.appendMessageToFeed = function(pkt, isSelf) {
+            let feed = document.getElementById('networkFeed');
+            if (feed.innerText.includes("النظام جاهز")) {
+                feed.innerHTML = "";
+            }
+            let item = document.createElement('div');
+            item.className = 'msg-item';
+            item.innerHTML = `
+                <strong>${isSelf ? '📤 (أرسلت)' : '📥 (استقبال من جهاز مجاور)'}</strong><br>
+                <strong>المرسل:</strong> ${pkt.sender || 'مجهول'}<br>
+                <strong>النص:</strong> ${pkt.text}<br>
+                <span style="color:#8b949e; font-size: 12px;">⏰ ${new Date(pkt.created_at || Date.now()).toLocaleTimeString()}</span>
+            `;
+            feed.prepend(item);
+        };
+
+        // دالة الإرسال عند الضغط على الزر
+        window.handleSendClick = async function() {
+            let name = document.getElementById('senderName').value;
+            let text = document.getElementById('msgText').value;
+            if (!text.trim()) return;
+
+            const { data, error } = await supabase
+                .from('nar_messages')
+                .insert([
+                    { sender: name, text: text, morse: '--- ... ---' }
+                ]);
+
+            if (error) {
+                alert('خطأ في الإرسال: ' + error.message);
+            } else {
+                document.getElementById('msgText').value = ""; // تفريغ حقل النص
+            }
+        };
+
+        // الاستماع الفوري للرسائل الجديدة (Realtime)
+        supabase
+          .channel('public:nar_messages')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'nar_messages' }, payload => {
+            console.log('رسالة جديدة وصلت:', payload.new);
+            appendMessageToFeed(payload.new, false);
+          })
+          .subscribe();
+    </script>
 </body>
 </html>
