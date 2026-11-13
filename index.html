@@ -1,130 +1,319 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="htmlRoot">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محطة طوارئ نظام NAR</title>
-    <style>
-        body {
-            background-color: #0d1117;
-            color: #c9d1d9;
-            font-family: Tahoma, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #161b22;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        input, button {
-            width: 90%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #30363d;
-            background: #21262d;
-            color: #fff;
-            font-size: 16px;
-        }
-        button {
-            background: #238636;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover {
-            background: #2ea043;
-        }
-        #networkFeed {
-            text-align: right;
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-            background: #0b0f19;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .msg-item {
-            background: #21262d;
-            margin: 8px 0;
-            padding: 10px;
-            border-right: 4px solid #58a6ff;
-            border-radius: 4px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام NAR السحابي الذكي للطوارئ - تطوير مينا وجدي يونان</title>
+<!-- مكتبة Supabase للربط اللحظي Real-time -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+--gold: #d4af37;
+--gold-light: #f3e5ab;
+--lapis: #0d1b2a;
+--lapis-mid: #1b263b;
+--red: #b71c1c;
+--card-bg: rgba(255, 253, 247, 0.98);
+--text-main: #222;
+}
+html, body {
+min-height: 100%;
+overflow-x: hidden;
+overflow-y: auto;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: radial-gradient(circle at top, #1b263b 0%, #0d1b2a 60%, #050a12 100%);
+color: var(--text-main);
+margin: 0;
+padding: 0;
+}
+header {
+background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+color: #fff;
+text-align: center;
+padding: 16px 15px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+border-bottom: 3px solid var(--gold);
+}
+header h1 { margin: 0; font-size: 20px; color: var(--gold-light); }
+header p { margin: 4px 0 0; font-size: 12px; color: #e0e0e0; }
+.container {
+max-width: 900px;
+margin: 15px auto;
+padding: 0 15px 40px 15px;
+}
+.panel {
+background: var(--card-bg);
+padding: 18px;
+border-radius: 12px;
+border: 2px solid var(--gold);
+box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+margin-bottom: 20px;
+}
+.panel h3 { margin-top: 0; color: #8b0000; font-size: 17px; border-bottom: 2px solid var(--gold); padding-bottom: 6px; }
+textarea {
+width: 100%;
+padding: 12px;
+border-radius: 8px;
+border: 1px solid var(--gold);
+font-size: 14px;
+outline: none;
+box-sizing: border-box;
+margin-bottom: 12px;
+background: #fff;
+}
+.btn-group {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+margin-bottom: 12px;
+}
+button {
+background: var(--gold);
+color: var(--lapis);
+border: 2px solid var(--gold-light);
+padding: 10px 18px;
+border-radius: 20px;
+font-weight: bold;
+font-size: 14px;
+cursor: pointer;
+transition: 0.3s;
+box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+button:hover { background: var(--gold-light); transform: scale(1.02); }
+.btn-emergency { background: #b71c1c; color: #fff; border-color: #e57373; }
+.btn-emergency:hover { background: #c62828; }
+.output-box {
+background: #1b263b;
+color: var(--gold-light);
+padding: 12px;
+border-radius: 8px;
+font-family: monospace;
+font-size: 15px;
+min-height: 40px;
+margin-bottom: 12px;
+word-break: break-all;
+}
+.sign-display {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+justify-content: center;
+background: #fff;
+padding: 12px;
+border-radius: 8px;
+border: 1px dashed var(--gold);
+min-height: 70px;
+align-items: center;
+}
+.sign-card {
+background: #fdfbf7;
+border: 1px solid #ccc;
+border-radius: 6px;
+padding: 8px 12px;
+text-align: center;
+font-size: 14px;
+font-weight: bold;
+color: #b71c1c;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.network-feed {
+background: #0d1b2a;
+color: #fff;
+padding: 12px;
+border-radius: 8px;
+max-height: 250px;
+overflow-y: auto;
+border: 1px solid var(--gold);
+font-size: 13px;
+}
+.msg-item {
+background: rgba(255,255,255,0.08);
+padding: 8px;
+border-radius: 6px;
+margin-bottom: 6px;
+border-right: 3px solid var(--gold);
+}
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>🚨 محطة طوارئ نظام NAR 🚨</h2>
-        <p>نظام الاتصال والتعقب الميداني المباشر</p>
+<header>
+<h1>🚨 نظام NAR السحابي اللحظي (مترجم + مرسل مركزي)</h1>
+<p>تطوير المبتكر: مينا وجدي يونان &copy; 2026</p>
+</header>
 
-        <input type="text" id="senderName" placeholder="اسم المرسل / المحطة" value="محطة الميدان">
-        <input type="text" id="msgText" placeholder="اكتب رسالة الطوارئ هنا...">
-        <button onclick="handleSendClick()">إرسال فوري للسحاب 📡</button>
+<div class="container">
 
-        <h3>سجل الرسائل الواردة:</h3>
-        <div id="networkFeed">
-            <div class="msg-item">النظام جاهز وفي انتظار الإشارات...</div>
-        </div>
-    </div>
+<!-- لوحة الإدخال والترجمة الفورية -->
+<div class="panel">
+<h3>✍️ محطة الإدخال والترجمة الشاملة (عربي / إنجليزي)</h3>
+<textarea id="userInput" rows="3" placeholder="اكتب رسالة الطوارئ بالعربي أو الإنجليزي هنا (مثال: نحتاج إسعاف عاجل في موقع كذا)..." oninput="processTranslation()"></textarea>
 
-    <!-- كود الاتصال بـ Supabase وربط الإرسال والاستقبال الفوري -->
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+<div class="btn-group">
+<button onclick="playMorseAudio()">🔊 تشغيل نغمات مورس</button>
+<button class="btn-emergency" onclick="sendNarToCloud()">📡 إرسال فوري لمحطة الطوارئ السحابية</button>
+</div>
 
-        const SUPABASE_URL = 'https://typtskmgjjajvwlxzxyd.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_f-miTVH0coVNguJAg_PTzQ_pTaA1RmX';
+<label style="font-weight:bold; font-size:13px; color:#333; display:block; margin-bottom:5px;">⚡ ترجمة شفرة مورس (Morse Code):</label>
+<div id="morseOutput" class="output-box">-... .- -.. ...- . -.--</div>
 
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<label style="font-weight:bold; font-size:13px; color:#333; display:block; margin:10px 0 5px;">🫱 ترجمة لغة الإشارة المرئية (Sign Language Cards):</label>
+<div id="signOutput" class="sign-display">
+<span style="color:#777; font-size:13px;">اكتب نصاً بالأعلى لتظهر بطاقات الإشارة فوراً...</span>
+</div>
+</div>
 
-        // دالة عرض الرسائل على الشاشة
-        window.appendMessageToFeed = function(pkt, isSelf) {
-            let feed = document.getElementById('networkFeed');
-            if (feed.innerText.includes("النظام جاهز")) {
-                feed.innerHTML = "";
-            }
-            let item = document.createElement('div');
-            item.className = 'msg-item';
-            item.innerHTML = `
-                <strong>${isSelf ? '📤 (أرسلت)' : '📥 (استقبال من جهاز مجاور)'}</strong><br>
-                <strong>المرسل:</strong> ${pkt.sender || 'مجهول'}<br>
-                <strong>النص:</strong> ${pkt.text}<br>
-                <span style="color:#8b949e; font-size: 12px;">⏰ ${new Date(pkt.created_at || Date.now()).toLocaleTimeString()}</span>
-            `;
-            feed.prepend(item);
-        };
+<!-- لوحة استلام طوارئ الشبكة السحابية -->
+<div class="panel">
+<h3>🌐 لوحة مراقبة واستقبال محطة الطوارئ المركزية (Real-time Feed)</h3>
+<p style="font-size:12px; color:#555; margin-top:0;">تستقبل لحظياً أي استغاثة تُرسل من أي موبايل أو جهاز متصل بالنظام:</p>
+<div id="networkFeed" class="network-feed">
+<div class="msg-item">ℹ️ جاري الاتصال بقاعدة بيانات الطوارئ السحابية...</div>
+</div>
+</div>
 
-        // دالة الإرسال عند الضغط على الزر
-        window.handleSendClick = async function() {
-            let name = document.getElementById('senderName').value;
-            let text = document.getElementById('msgText').value;
-            if (!text.trim()) return;
+</div>
 
-            const { data, error } = await supabase
-                .from('nar_messages')
-                .insert([
-                    { sender: name, text: text, morse: '--- ... ---' }
-                ]);
+<script>
+// بيانات Supabase المحدثة الخاصة بمشروعك يا مينا
+const SUPABASE_URL = 'https://typtskmgjjajvwlxzxyd.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_f-miTVH0coVNguJAg_PTzQ_pTaA1RmX';
 
-            if (error) {
-                alert('خطأ في الإرسال: ' + error.message);
-            } else {
-                document.getElementById('msgText').value = ""; // تفريغ حقل النص
-            }
-        };
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // الاستماع الفوري للرسائل الجديدة (Realtime)
-        supabase
-          .channel('public:nar_messages')
-          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'nar_messages' }, payload => {
-            console.log('رسالة جديدة وصلت:', payload.new);
-            appendMessageToFeed(payload.new, false);
-          })
-          .subscribe();
-    </script>
+// قاموس شفرة مورس
+const morseMap = {
+'a':'.-', 'b':'-...', 'c':'-.-.', 'd':'-..', 'e':'.', 'f':'..-.', 'g':'--.', 'h':'....', 'i':'..', 'j':'.---', 'k':'-.-', 'l':'.-..', 'm':'--', 'n':'-.', 'o':'---', 'p':'.--.', 'q':'--.-', 'r':'.-.', 's':'...', 't':'-', 'u':'..-', 'v':'...-', 'w':'.--', 'x':'-..-', 'y':'-.--', 'z':'--..',
+'أ':'.-', 'ب':'-...', 'ت':'-', 'ث':'...-', 'ج':'.---', 'ح':'....', 'خ':'--.', 'د':'-..', 'ذ':'--..', 'ر':'.-.', 'ز':'--..', 'س':'...', 'ش':'----', 'ص':'-..-', 'ض':'...-', 'ط':'-.-', 'ظ':'.-.', 'ع':'.-.-', 'غ':'--.', 'ف':'..-.', 'ق':'--.-', 'ك':'-.-', 'ل':'.-..', 'م':'--', 'ن':'-.', 'ه':'....', 'و':'.--', 'ي':'..', ' ':'/'
+};
+
+function processTranslation() {
+let text = document.getElementById('userInput').value.toLowerCase();
+let morseRes = "";
+let signContainer = document.getElementById('signOutput');
+signContainer.innerHTML = "";
+
+if(!text.trim()) {
+document.getElementById('morseOutput').innerText = "-... .- -.. ...- . -.--";
+signContainer.innerHTML = '<span style="color:#777; font-size:13px;">اكتب نصاً بالأعلى لتظهر بطاقات الإشارة فوراً...</span>';
+return;
+}
+
+for(let i=0; i<text.length; i++) {
+let char = text[i];
+morseRes += (morseMap[char] || char) + " ";
+}
+document.getElementById('morseOutput').innerText = morseRes;
+
+for(let i=0; i<Math.min(text.length, 15); i++) {
+if(text[i] !== ' ') {
+let card = document.createElement('div');
+card.className = 'sign-card';
+card.innerHTML = `<div>🫱</div><div style="font-size:16px;">${text[i].toUpperCase()}</div>`;
+signContainer.appendChild(card);
+}
+}
+}
+
+function playMorseAudio() {
+let morseText = document.getElementById('morseOutput').innerText;
+if(!morseText || morseText.includes("-... .-")) {
+alert("⚠️ اكتب نصاً صحيحاً أولاً لتشغيل نغمات مورس!");
+return;
+}
+let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let delay = 0;
+
+for(let i=0; i<morseText.length; i++) {
+let symbol = morseText[i];
+let duration = (symbol === '.') ? 0.08 : (symbol === '-') ? 0.25 : 0.4;
+
+if(symbol === '.' || symbol === '-') {
+setTimeout(() => {
+if(audioCtx.state === 'suspended') audioCtx.resume();
+let osc = audioCtx.createOscillator();
+let gain = audioCtx.createGain();
+osc.type = 'sine';
+osc.frequency.value = 650;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+osc.start();
+gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+osc.stop(audioCtx.currentTime + duration);
+}, delay * 1000);
+}
+delay += duration + 0.08;
+}
+}
+
+// إرسال البيانات فوراً إلى جدول Supabase
+async function sendNarToCloud() {
+let text = document.getElementById('userInput').value;
+let morse = document.getElementById('morseOutput').innerText;
+
+if(!text.trim()) {
+alert("⚠️ من فضلك اكتب رسالة قبل إرسالها!");
+return;
+}
+
+let senderName = "موبايل_مينا_" + Math.floor(Math.random()*1000);
+
+let { data, error } = await supabaseClient
+.from('nar_messages')
+.insert([{ sender: senderName, text: text, morse: morse }]);
+
+if(error) {
+alert("❌ حدث خطأ أثناء الإرسال: " + error.message);
+} else {
+document.getElementById('userInput').value = "";
+processTranslation();
+}
+}
+
+// جلب الرسائل القديمة أول ما الصفحة تفتح
+async function fetchInitialMessages() {
+let { data, error } = await supabaseClient
+.from('nar_messages')
+.select('*')
+.order('created_at', { ascending: false })
+.limit(10);
+
+if(!error && data) {
+let feed = document.getElementById('networkFeed');
+feed.innerHTML = "";
+data.reverse().forEach(msg => {
+appendMessageToFeed(msg);
+});
+}
+}
+
+// الاستماع للرسائل اللحظية الجديدة عبر Supabase Realtime
+supabaseClient
+.channel('public:nar_messages')
+.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'nar_messages' }, payload => {
+appendMessageToFeed(payload.new);
+})
+.subscribe();
+
+function appendMessageToFeed(pkt) {
+let feed = document.getElementById('networkFeed');
+if(feed.innerText.includes("جاري الاتصال")) {
+feed.innerHTML = "";
+}
+let timeStr = new Date(pkt.created_at || Date.now()).toLocaleTimeString();
+let item = document.createElement('div');
+item.className = 'msg-item';
+item.innerHTML = `
+<strong>🚨 استغاثة جديدة من [${pkt.sender}] - ${timeStr}</strong><br>
+💬 <strong>النص:</strong> ${pkt.text}<br>
+⚡ <strong>مورس:</strong> <span style="color:var(--gold-light);">${pkt.morse}</span>
+`;
+feed.prepend(item);
+}
+
+// تشغيل جلب البيانات عند التحميل
+fetchInitialMessages();
+</script>
+
 </body>
 </html>
